@@ -71,11 +71,40 @@ class CSP:
         self.undo_assignments: Dict[Variable, Set[Variable]] = {}
         self.undo_assignments[None] = set()
 
+    def count_conflicts(self, var: Variable, val: Value) -> int:
+        """Count the constraints that would be violated by making this assignment."""
+
+        # Basically, we loop through every neighbour of `var`. For each
+        # neighbour, we ask if there is at least one value that we can assign
+        # to the neighbour that doesn't conflict with `var`. If no such
+        # assignment is possible, we increment `n_conflicts` by 1.
+        n_conflicts = 0
+        for ovar, ovals in self.conflicts[(var, val)].items():
+            any_valid = False
+            for oval in self.current_domains[ovar]:
+                if oval not in ovals:
+                    any_valid = True
+                    break
+            if not any_valid:
+                n_conflicts += 1
+        return n_conflicts
+
+    def get_violated_constraints(self, var: Variable, val: Value) -> Set[VarPair]:
+        """Return the scopes of the constraints that would be violated by making this assignment."""
+        violated = set()
+        for ovar, ovals in self.conflicts[(var, val)].items():
+            any_valid = False
+            for oval in self.current_domains[ovar]:
+                if oval not in ovals:
+                    any_valid = True
+                    break
+            if not any_valid:
+                violated.add((var, ovar))
+        return violated
 
 # -------------------------------------------------------------------------------
 # You should not need to look below this point unless you are interested
 # -------------------------------------------------------------------------------
-
 
     def notify_of_inference(self, var, assignment, pruned_list):
         """ Notify the problem that setting the given variable caused the given
