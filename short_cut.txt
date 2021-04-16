@@ -17,3 +17,7 @@ md + mrv:
 - E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/solver.py -v md-mrv -k test_problems/sudoku_01.csp
 mrv + md:
 - E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/solver.py -v mrv-md -k test_problems/sudoku_01.csp
+
+Section 2
+lcvf：
+- E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/solver.py -l lcvf -k test_problems/sudoku_01.csp

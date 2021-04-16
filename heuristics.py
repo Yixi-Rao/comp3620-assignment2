@@ -17,6 +17,7 @@ value ordering.
 from typing import Callable, Dict, List, Optional
 
 from csp import CSP
+from queue import PriorityQueue
 
 Assignment = Dict[str, str]
 
@@ -260,36 +261,48 @@ def value_ordering_lex(var: str, assignment: Assignment, gamma: CSP) -> List[str
 def value_ordering_lcvf(var: str, assignment: Assignment, gamma: CSP) -> List[str]:
     """Order the values based on the Least Constraining Value heuristic.
 
-    This heuristic returns values in order of how constraining they are. It
-    prefers the value that rules out the fewest choices for the neighbouring
-    variables in the constraint graph. In other words,  it prefers values which
-    remove the fewest elements from the current domains of their neighbouring
-    variables.
+        This heuristic returns values in order of how constraining they are. It
+        prefers the value that rules out the fewest choices for the neighbouring
+        variables in the constraint graph. In other words,  it prefers values which
+        remove the fewest elements from the current domains of their neighbouring
+        variables.
 
-    See Lecture 11 for the precise definition. You might find the attribute
-    `gamma.current_domains` to be useful. This is a dictionary that maps a
-    variable name (a string) to a set of values (a set of strings) in that
-    variable's current domain.
+        See Lecture 11 for the precise definition. You might find the attribute
+        `gamma.current_domains` to be useful. This is a dictionary that maps a
+        variable name (a string) to a set of values (a set of strings) in that
+        variable's current domain.
 
-    Parameters
-    ----------
-    var : str
-        The name of the variable which we want to assign a value.
-    assignment : Dict[str, str]
-        A Python dictionary that maps variable names to values.
-    gamma : CSP
-        An instance of the class CSP, representing the constraint network
-        to which we are looking for a solution.
+        Parameters
+        ----------
+        var : str
+            The name of the variable which we want to assign a value.
+        assignment : Dict[str, str]
+            A Python dictionary that maps variable names to values.
+        gamma : CSP
+            An instance of the class CSP, representing the constraint network
+            to which we are looking for a solution.
 
-    Returns
-    -------
-    values : List[str]
-        All the values in  the current domain of the variable, sorted according
-        to this heuristic.
-
+        Returns
+        -------
+        values : List[str]
+            All the values in  the current domain of the variable, sorted according
+            to this heuristic.
     """
-    # *** YOUR CODE HERE ***
-    raise NotImplementedError("Error: LCVF heuristic not implemented yet!")
+    # sorted_values = []
+    # for val in gamma.current_domains[var]:
+    #     num_invalid = count_conflict_values(var, val, assignment, gamma)
+    #     sorted_values.append((num_invalid, val))
+    return [y for x,y in sorted([(count_conflict_values(var, x, assignment, gamma), x) for x in gamma.current_domains[var]])]            
+        
+def count_conflict_values(var: str, val : str, assignment: Assignment, gamma: CSP):
+    n_conflict_value = 0
+    for neighbor, neighbor_conflicts in gamma.conflicts[(var, val)].items():
+        if neighbor not in assignment:
+            for neighbor_value in gamma.current_domains[neighbor]:
+                if neighbor_value in neighbor_conflicts:
+                    n_conflict_value += 1
+            
+    return n_conflict_value
 
 
 # -------------------------------------------------------------------------------
