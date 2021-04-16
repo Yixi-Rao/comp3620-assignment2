@@ -1,0 +1,19 @@
+CSP:
+1. sudoku_01.csp
+2. 3_color_50_l.csp
+2. 3_color_50_k.csp
+2. 3_color_tree.csp
+3. 8_queens.csp
+4. map_colouring.csp
+
+Section 1
+lex:
+- E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/solver.py -v lex -k test_problems/sudoku_01.csp
+md:
+- E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/solver.py -v md -k test_problems/sudoku_01.csp
+mrv:
+- E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/solver.py -v mrv -k test_problems/sudoku_01.csp
+md + mrv:
+- E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/solver.py -v md-mrv -k test_problems/sudoku_01.csp
+mrv + md:
+- E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/solver.py -v mrv-md -k test_problems/sudoku_01.csp

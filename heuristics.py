@@ -7,9 +7,9 @@ Date:    2021
 
 Student Details
 ---------------
-Student Name:
-Student Number:
-Date:
+Student Name: Yixi Rao
+Student Number: u6826541
+Date: 18/04/2021
 
 This is where you need to write your heuristics for variable selection and
 value ordering.
@@ -77,9 +77,23 @@ def next_variable_md(assignment: Assignment, gamma: CSP) -> Optional[str]:
         remaining unassigned variables, we return None.
 
     """
-    # *** YOUR CODE HERE ***
-    raise NotImplementedError("Error: MD heuristic not implemented yet!")
-
+    cur_MD_V = ("", 0)
+    first = True
+    for var in gamma.variables:
+        if var not in assignment:
+            num_con = len(list(filter(lambda x: x not in assignment, gamma.neighbours[var]))) 
+            if first:
+                cur_MD_V = (var, num_con)
+                first = False
+            else:
+                if cur_MD_V[1] < num_con:
+                    cur_MD_V = (var, num_con)
+                
+    if cur_MD_V[0]  != "":
+        return cur_MD_V[0]
+    else:    
+        return None
+    
 
 def next_variable_mrv(assignment: Assignment, gamma: CSP) -> Optional[str]:
     """Implement the most constrained variable heuristic (MRV).
@@ -102,9 +116,23 @@ def next_variable_mrv(assignment: Assignment, gamma: CSP) -> Optional[str]:
         remaining unassigned variables, we return None.
 
     """
-    # *** YOUR CODE HERE ***
-    raise NotImplementedError("Error: MRV heuristic not implemented yet!")
-
+    # MRV_dict = {}
+    MRV_var = ("", 0)
+    first   = True
+    for var in gamma.variables:
+        if var not in assignment:
+            domain_size = len(list(filter(lambda x: gamma.count_conflicts(var, x) == 0, gamma.current_domains[var])))
+            if first:
+                first   = False
+                MRV_var = (var, domain_size)
+            else:
+                if MRV_var[1] > domain_size:
+                    MRV_var = (var, domain_size)
+                    # MRV_dict[var] = len(list(filter(lambda x: gamma.count_conflicts(var, x) == 0, gamma.current_domains[var])))
+    if MRV_var[0] != "":
+        return MRV_var[0]
+    else:
+        return None
 
 def next_variable_md_mrv(assignment: Assignment, gamma: CSP) -> Optional[str]:
     """Implement MD heuristic, breaking ties with MRV.
@@ -128,8 +156,27 @@ def next_variable_md_mrv(assignment: Assignment, gamma: CSP) -> Optional[str]:
         remaining unassigned variables, we return None.
 
     """
-    # *** YOUR CODE HERE ***
-    raise NotImplementedError("Error: MD/MRV heuristic not implemented yet!")
+    cur_MD_V = ("", 0)
+    first = True
+    for var in gamma.variables:
+        if var not in assignment:
+            num_con = len(list(filter(lambda x: x not in assignment, gamma.neighbours[var]))) 
+            if first:
+                cur_MD_V = (var, num_con)
+                first = False
+            else:
+                if cur_MD_V[1] < num_con:
+                    cur_MD_V = (var, num_con)
+                elif cur_MD_V[1] == num_con:
+                    cur_domain_size = len(list(filter(lambda x: gamma.count_conflicts(cur_MD_V[0], x) == 0, gamma.current_domains[cur_MD_V[0]])))
+                    var_domain_size = len(list(filter(lambda x: gamma.count_conflicts(var,         x) == 0, gamma.current_domains[var])))
+                    if cur_domain_size > var_domain_size:
+                        cur_MD_V = (var, num_con)
+                
+    if cur_MD_V[0]  != "":
+        return cur_MD_V[0]
+    else:    
+        return None
 
 
 def next_variable_mrv_md(assignment: Assignment, gamma: CSP) -> Optional[str]:
@@ -154,9 +201,26 @@ def next_variable_mrv_md(assignment: Assignment, gamma: CSP) -> Optional[str]:
         remaining unassigned variables, we return None.
 
     """
-    # *** YOUR CODE HERE ***
-    raise NotImplementedError("Error: MRV/MD heuristic not implemented yet!")
-
+    MRV_var = ("", 0)
+    first   = True
+    for var in gamma.variables:
+        if var not in assignment:
+            domain_size = len(list(filter(lambda x: gamma.count_conflicts(var, x) == 0, gamma.current_domains[var])))
+            if first:
+                first   = False
+                MRV_var = (var, domain_size)
+            else:
+                if MRV_var[1] > domain_size:
+                    MRV_var = (var, domain_size)
+                elif MRV_var[1] == domain_size:
+                    cur_num_con = len(list(filter(lambda x: x not in assignment, gamma.neighbours[MRV_var[0]]))) 
+                    var_num_con = len(list(filter(lambda x: x not in assignment, gamma.neighbours[var]))) 
+                    if var_num_con > cur_num_con:
+                        MRV_var = (var, domain_size)
+    if MRV_var[0] != "":
+        return MRV_var[0]
+    else:
+        return None
 
 # -----------------------------------------------------------------------------
 # Value Ordering Heuristics
