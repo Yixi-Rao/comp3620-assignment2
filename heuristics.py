@@ -295,6 +295,17 @@ def value_ordering_lcvf(var: str, assignment: Assignment, gamma: CSP) -> List[st
     return [y for x,y in sorted([(count_conflict_values(var, x, assignment, gamma), x) for x in gamma.current_domains[var]])]            
         
 def count_conflict_values(var: str, val : str, assignment: Assignment, gamma: CSP):
+    """AI is creating summary for count_conflict_values
+
+    Args:
+        var (str): [description]
+        val (str): [description]
+        assignment (Assignment): [description]
+        gamma (CSP): [description]
+
+    Returns:
+        [type]: [description]
+    """
     n_conflict_value = 0
     for neighbor, neighbor_conflicts in gamma.conflicts[(var, val)].items():
         if neighbor not in assignment:

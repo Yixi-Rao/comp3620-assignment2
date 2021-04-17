@@ -21,3 +21,5 @@ mrv + md:
 Section 2
 lcvf：
 - E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/solver.py -l lcvf -k test_problems/sudoku_01.csp
+Section 3
+- E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/solver.py -v lex -l lex -i forward test_problems/sudoku_01.csp
