@@ -32,4 +32,5 @@ sat:
 unsat:
 - E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/n_to_bin.py --input nary_problems/unsat/test_unsat_35.csp --output nary_problems/un_binarised_02.csp
 Section 6
-- E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/wumpus2csp.py --input wumpus_maps/big/wumpus_01.json --action north --output wumpus_outputs
+- E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/wumpus2csp.py --input wumpus_maps/big/wumpus_01.json --action north --output wumpus_outputs/c.csp
+- E:/anaconda2021/python.exe g:/ANU2021/3620/code/comp3620-2021-assignment-2/solver.py -v lex -l lex -i forward wumpus_outputs/a.csp
