@@ -7,9 +7,9 @@ Date:    2021
 
 Student Details
 ---------------
-Student Name:
-Student Number:
-Date:
+Student Name: Yixi Rao
+Student Number: u6826541
+Date: 19/04/2021
 """
 import argparse
 import os
