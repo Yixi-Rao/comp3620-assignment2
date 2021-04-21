@@ -1,0 +1,9 @@
+var <02,11> : <S,P> <P,P> <P,S>
+var <11,20> : <W,W> <S,W> <W,S>
+var <02,11,20> : <S,S,P> <S,S,W> <S,P,W> <P,W,S> <S,P,S> <S,W,S> <S,W,P> <W,S,S> <P,S,S> <W,S,P> <W,P,S> <P,S,W> <S,S,S>
+var <20> : <S>
+con <02,11> <11,20> : <P,S> <S,W>
+con <02,11> <02,11,20> : <S,P> <S,P,W> : <S,P> <S,P,S> : <P,S> <P,S,S> : <P,S> <P,S,W>
+con <11,20> <02,11,20> : <S,W> <S,S,W> : <S,W> <P,S,W> : <W,S> <P,W,S> : <W,S> <S,W,S>
+con <11,20> <20> : <W,S> <S>
+con <02,11,20> <20> : <P,W,S> <S> : <S,P,S> <S> : <S,W,S> <S> : <W,S,S> <S> : <P,S,S> <S> : <W,P,S> <S> : <S,S,S> <S>

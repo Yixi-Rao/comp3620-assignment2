@@ -1,0 +1,9 @@
+var 12 : P W S
+var 21 : P W S
+var 03 : W S
+var 20 : P S
+con 20 : P
+con 12 21 : P W : W P
+con 03 12 : W S : S W : W W
+con 12 21 03 20 : W S P S : W P S P : W P P S : P W S S : S P W S : S W P P : P S S P : S S W S : P S S W : P P S W : W P S S : P S S S : S P P W : P P S S : S W S P : W S S P : S W P S : S S P P : P S W P : P P W S : S P P S : S S P W : S W S S : W S S S : P S W S : S P S P : S S P S : P W P S : S P S W : S S S P : S P S S : P W S P : S S S W : P S P W : W S P P : S S W P : S P W P : P S P S : S S S S
+con 12 : S

@@ -1,0 +1,12 @@
+var <12,21> : <W,P> <P,W>
+var <03,12> : <P,S> <P,P> <S,P>
+var <21,30> : <S,W> <W,W> <W,S>
+var <12,21,03,30> : <P,S,S,S> <W,S,P,P> <P,S,W,S> <S,S,P,S> <S,P,S,S> <S,W,P,P> <W,P,S,S> <P,P,W,S> <P,W,S,P> <S,S,W,S> <S,S,S,S> <S,W,S,P> <S,P,P,W> <P,P,S,S> <S,P,W,P> <P,S,S,P> <W,S,S,P> <S,S,P,P> <P,S,W,P> <P,S,P,W> <S,P,S,P> <W,P,S,P> <S,S,W,P> <P,S,S,W> <P,W,P,S> <S,P,S,W> <S,S,P,W> <W,S,P,S> <S,S,S,P> <S,W,P,S> <S,P,P,S> <P,W,S,S> <S,S,S,W> <P,P,S,W> <S,W,S,S> <W,P,P,S> <P,S,P,S> <W,S,S,S> <S,P,W,S>
+var <30> : <S>
+con <12,21> <03,12> : <P,W> <P,P> : <P,W> <S,P>
+con <12,21> <21,30> : <P,W> <W,W> : <P,W> <W,S>
+con <12,21> <12,21,03,30> : <W,P> <W,P,S,S> : <W,P> <W,P,S,P> : <W,P> <W,P,P,S> : <P,W> <P,W,S,P> : <P,W> <P,W,P,S> : <P,W> <P,W,S,S>
+con <03,12> <12,21,03,30> : <P,S> <S,S,P,S> : <P,S> <S,W,P,P> : <P,S> <S,P,P,W> : <P,S> <S,S,P,P> : <P,S> <S,S,P,W> : <P,S> <S,W,P,S> : <P,S> <S,P,P,S> : <P,P> <P,S,P,W> : <P,P> <P,W,P,S> : <P,P> <P,S,P,S> : <S,P> <P,S,S,S> : <S,P> <P,W,S,P> : <S,P> <P,P,S,S> : <S,P> <P,S,S,P> : <S,P> <P,S,S,W> : <S,P> <P,W,S,S> : <S,P> <P,P,S,W>
+con <21,30> <12,21,03,30> : <S,W> <P,S,P,W> : <S,W> <P,S,S,W> : <S,W> <S,S,P,W> : <S,W> <S,S,S,W> : <W,S> <P,W,P,S> : <W,S> <S,W,P,S> : <W,S> <P,W,S,S> : <W,S> <S,W,S,S>
+con <21,30> <30> : <W,S> <S>
+con <12,21,03,30> <30> : <P,S,S,S> <S> : <P,S,W,S> <S> : <S,S,P,S> <S> : <S,P,S,S> <S> : <W,P,S,S> <S> : <P,P,W,S> <S> : <S,S,W,S> <S> : <S,S,S,S> <S> : <P,P,S,S> <S> : <P,W,P,S> <S> : <W,S,P,S> <S> : <S,W,P,S> <S> : <S,P,P,S> <S> : <P,W,S,S> <S> : <S,W,S,S> <S> : <W,P,P,S> <S> : <P,S,P,S> <S> : <W,S,S,S> <S> : <S,P,W,S> <S>

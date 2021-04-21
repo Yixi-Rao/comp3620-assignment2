@@ -90,11 +90,11 @@ class Wumpus_world:
         for n_x, n_y in neighbours:
             self.Map[n_y][n_x].update_possible_state("W")
     
-    def get_risky_cells(self, perc_cells: set):
+    def get_risky_cells(self, perc_cells: set, observed_cells):
         r_cells = []
         for x, y in perc_cells:
             adj_cs = self.adjacent_cells(x, y)
-            r_cells.extend([(x1, y1) for x1, y1 in adj_cs if self.Map[y1][x1].get_state() == "" and (x1, y1) not in r_cells])
+            r_cells.extend([(x1, y1) for x1, y1 in adj_cs if (x1, y1) not in observed_cells and (x1, y1) not in r_cells]) # 
         return r_cells
         
     def get_cell_state(self, x, y):
@@ -211,21 +211,6 @@ def main():
 
     # The name of the action to test
     action = args.action
-    #
-        # action       = "east"
-        # n_rows       = 4         # y
-        # n_columns    = 3         # x
-        # n_wumpuses   = 1
-        # n_pits       = 2
-        # observations = [
-        #     {'location': [1, 1], 'percepts': []},
-        #     {'location': [2, 1], 'percepts': ['Breeze']},
-        #     {'location': [1, 1], 'percepts': []},
-        #     {'location': [1, 2], 'percepts': []},
-        #     {'location': [2, 2], 'percepts': ['Breeze', 'Stench']},
-        #     {'location': [1, 2], 'percepts': []},
-        #     {'location': [1, 3], 'percepts': ['Stench']}
-        #     ]
 
     # The path of the directory that will contain the generated CSP files
     output_path = args.output
@@ -240,6 +225,8 @@ def main():
     observations = dao["observations"] # [ {"location" : [x,y], "percepts" : ["Breeze"]} ... ]
 
     # definition
+    input_file              = args.input.split("/")[-1].split(".")[0]
+    
     W_WORLD                 = Wumpus_world(n_columns, n_rows, n_wumpuses, n_pits)  
     cur_pos                 = observations[-1]["location"] # 图坐标
     is_next_valid, test_pos = W_WORLD.is_in_map(action, cur_pos[0] - 1, cur_pos[1] - 1)
@@ -250,7 +237,7 @@ def main():
     # if the next move is invalid than just quit
     if not is_next_valid:
         print("invalid move")
-        # return None
+        return None
 
     # update the possible states attribute of all the risky cell and update the state attribute of all the safe cell
     for ob in observations:
@@ -271,12 +258,14 @@ def main():
 #--------------------------------------------- Section 2: doamin part -------------------------------------------------
     # this section will generate the cell domain of the involved variables
     cell_domains = {} # { (x,y):set("s","w","p") }
-    risky_cells  = W_WORLD.get_risky_cells(observed_cells) # 坐标轴 list（（x，y））
+    risky_cells  = W_WORLD.get_risky_cells(observed_cons_cells, observed_cells) # 坐标轴 list（（x，y））
+    
     for xr, yr in risky_cells:
         cell_domains[(xr, yr)] = W_WORLD.get_cell_possible_states(xr, yr)
         cell_domains[(xr, yr)].add("S")
-        # if (xr, yr) != test_pos:
-        #     cell_domains[(xr,yr)].add("S")
+        
+    if test_pos not in cell_domains:
+        cell_domains[test_pos] = {"S"}
 
 #--------------------------------------------- Section 3: constraints part ---------------------------------------------
     # this section will generate all the constraints of this problem 
@@ -300,9 +289,9 @@ def main():
         
     cell_constraints.append(a_constraint)
 
-#--------------------------------------------- Section 3: file part ---------------------------------------------------
+#--------------------------------------------- Section 4: file part ---------------------------------------------------
     # this seaction will write the a.csp file
-    with open(output_path, "w") as file:
+    with open(output_path + "/" + input_file + "_" + action + "_a.csp", "w") as file:
         for pos, domain in cell_domains.items():
             file.write("var " + "".join([str(p) for p in pos]) + " : " +  " ".join(domain) + "\n")
             
@@ -318,7 +307,7 @@ def main():
     # this seaction will write the b.csp file
     cell_constraints.remove(a_constraint)
     cell_constraints.append(((test_pos,), {"S"}))
-    with open(output_path, "w") as file:
+    with open(output_path + "/" + input_file + "_" + action + "_b.csp", "w") as file:
         for pos, domain in cell_domains.items():
             file.write("var " + "".join([str(p) for p in pos]) + " : " +  " ".join(domain) + "\n")
             
@@ -330,9 +319,22 @@ def main():
                 file.write("con " + " ".join(cons_vars) + " : " + cons_valid_list[0] + "\n")
             else:
                 file.write("con " + " ".join(cons_vars) + " : " + reduce(lambda x, y: x + " : " + " ".join(y), cons_valid_list) + "\n")
-
-    convert(output_path, output_path)
-    convert(output_path, output_path)
-
+    
+    try:
+        convert(output_path + "/" + input_file + "_" + action + "_a.csp",  output_path + "/" + input_file + "_" + action + "_a.csp")
+    except ValueError:
+        print(input_file + "_" + action + "_a.csp " + "using toy binary csp")
+        with open(output_path + "/" + input_file + "_" + action + "_a.csp", "w") as file:
+            file.write("var a : 0" + "\n")
+            file.write("con a : 1" + "\n")
+    
+    try:
+        convert(output_path + "/" + input_file + "_" + action + "_b.csp",  output_path + "/" + input_file + "_" + action + "_b.csp")
+    except ValueError:
+        print(input_file + "_" + action + "_b.csp " + "using toy binary csp")
+        with open(output_path + "/" + input_file + "_" + action + "_b.csp", "w") as file:
+            file.write("var a : 0" + "\n")
+            file.write("con a : 1" + "\n")
+        
 if __name__ == '__main__':
     main() 
